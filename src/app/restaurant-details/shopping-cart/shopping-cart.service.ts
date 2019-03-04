@@ -7,15 +7,19 @@ export class ShoppingCartService {
   add (menuItem: MenuItem): void {
     let itemFounded = this.items.find((item) => item.item.id === menuItem.id);
 
-    if (itemFounded){
+    if (itemFounded) {
       itemFounded.quantity = itemFounded.quantity + 1;
     } else {
       this.items.push(new CartItem(menuItem));
     }
   }
 
+  clear() {
+    this.items = [];
+  }
+
   remove (item: CartItem): void {
-    this.items.splice(this.items.indexOf(item), 0);
+    this.items.splice(this.items.indexOf(item), 1);
   }
 
   total(): number {
