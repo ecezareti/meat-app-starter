@@ -7,7 +7,14 @@
     <h2>Pedido Concluído</h2>
     <p>Seu pedido foi recebido pelo restaurante. Prepare a mesa que a comida está chegando!</p>
     <p><b>Avalie</b> sua experiência:</p>
-    <p><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></p>
+    <p>
+      <mt-rating (rated)="rated = true"></mt-rating>
+    </p>
+    <div *ngIf="rated">
+      <h1>
+        Obrigado por sua avaliação ;)
+      </h1>
+    </div>
   </div>
 
 </section>

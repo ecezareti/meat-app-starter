@@ -1,0 +1,7 @@
+<i *ngFor="let r of ratings"
+  class="fa fa-start"
+  [class.fa-star]="r <= value"
+  [class.fa-star-o]="r > value"
+  (click)="setValue (r)"
+  (mouseover)="setTemporaryValue (r)"
+  (mouseleave)="clearTemporaryValue()"></i>
