@@ -1,5 +1,5 @@
 import { Component, OnInit, ContentChild, Input, AfterContentInit } from '@angular/core';
-import { NgModel } from '@angular/forms';
+import { NgModel, FormControlName } from '@angular/forms';
 
 
 @Component({
@@ -10,9 +10,10 @@ export class InputComponent implements OnInit, AfterContentInit {
   @Input() errorMessage: string;
   @Input() label: string;
 
-  @Input() input: NgModel;
+  @Input() input: any;
 
   @ContentChild(NgModel) model: NgModel;
+  @ContentChild(FormControlName) controlName: FormControlName;
 
   constructor() { }
 
@@ -20,10 +21,10 @@ export class InputComponent implements OnInit, AfterContentInit {
   }
 
   ngAfterContentInit(): void {
-    this.input = this.model;
+    this.input = this.model || this.controlName;
 
     if (this.input === undefined) {
-      throw new Error ('Não foi identificada a diretiva ngModel no componente informado');
+      throw new Error ('Não foi identificada a diretiva ngModel ou formControlName no componente informado');
     }
   }
 

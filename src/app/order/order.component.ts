@@ -4,6 +4,7 @@ import { RadioOption } from 'app/shared/radio/radioOption';
 import { OrderService } from './order.service';
 import { Order, OrderItem } from './order.model';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'mt-order',
@@ -18,13 +19,42 @@ export class OrderComponent implements OnInit {
   ];
 
   delivery = 2.75;
+  orderForm: FormGroup;
 
-  constructor(private orderService: OrderService, private router: Router) { }
+  emailPattern = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  numberPattern = /^[0-9]*$/;
 
-  ngOnInit() {
+  static equalsTo(group: AbstractControl): { [key: string]: boolean } {
+    const email = group.get('email');
+    const emailConfirmation = group.get('emailConfirmation');
+
+    if (!email || !emailConfirmation) {
+      return undefined;
+    }
+
+    if (email.value !== emailConfirmation.value) {
+      return { emailIsNotMatch: true };
+    }
+
+    return undefined;
   }
 
-  itemsValue (): number {
+  constructor(private orderService: OrderService, private router: Router, private formBuilder: FormBuilder) { }
+
+  ngOnInit() {
+    this.orderForm = this.formBuilder.group(
+      {
+        name: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
+        email: this.formBuilder.control('', [Validators.required, Validators.pattern(this.emailPattern)]),
+        emailConfirmation: this.formBuilder.control('', [Validators.required, Validators.pattern(this.emailPattern)]),
+        address: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
+        number: this.formBuilder.control('', [Validators.required, Validators.pattern(this.numberPattern)]),
+        optionalAddress: this.formBuilder.control(''),
+        paymentOption: this.formBuilder.control('', [Validators.required])
+      }, { validator: OrderComponent.equalsTo });
+  }
+
+  itemsValue(): number {
     return this.orderService.itemsValue();
   }
 
@@ -40,7 +70,7 @@ export class OrderComponent implements OnInit {
     this.orderService.increaseQty(item);
   }
 
-  removeItem (item: CartItem) {
+  removeItem(item: CartItem) {
     this.orderService.removeItem(item);
   }
 
@@ -48,13 +78,13 @@ export class OrderComponent implements OnInit {
     return this.items().length > 0;
   }
 
-  checkOrder (order: Order) {
+  checkOrder(order: Order) {
     order.orderItems = this.orderService.items()
-                                      .map ((item) => new OrderItem (item.quantity, item.item.id));
-    this.orderService.checkOrder (order).subscribe (
+      .map((item) => new OrderItem(item.quantity, item.item.id));
+    this.orderService.checkOrder(order).subscribe(
       (orderId: string) => {
         this.orderService.clear();
-        this.router.navigate (['/order-summary']);
+        this.router.navigate(['/order-summary']);
       });
   }
 }
