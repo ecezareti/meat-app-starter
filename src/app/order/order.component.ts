@@ -1,8 +1,9 @@
-import { FormsModule } from '@angular/forms';
 import { CartItem } from 'app/restaurant-details/shopping-cart/cart-item.model';
 import { Component, OnInit } from '@angular/core';
 import { RadioOption } from 'app/shared/radio/radioOption';
 import { OrderService } from './order.service';
+import { Order, OrderItem } from './order.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'mt-order',
@@ -16,12 +17,18 @@ export class OrderComponent implements OnInit {
     { label: 'Cartão Débito', value: 'DEB' },
   ];
 
-  constructor(private orderService: OrderService) { }
+  delivery = 2.75;
+
+  constructor(private orderService: OrderService, private router: Router) { }
 
   ngOnInit() {
   }
 
-  items (): CartItem []{
+  itemsValue (): number {
+    return this.orderService.itemsValue();
+  }
+
+  items(): CartItem[] {
     return this.orderService.items();
   }
 
@@ -39,5 +46,15 @@ export class OrderComponent implements OnInit {
 
   hasSuccess(): boolean {
     return this.items().length > 0;
+  }
+
+  checkOrder (order: Order) {
+    order.orderItems = this.orderService.items()
+                                      .map ((item) => new OrderItem (item.quantity, item.item.id));
+    this.orderService.checkOrder (order).subscribe (
+      (orderId: string) => {
+        this.orderService.clear();
+        this.router.navigate (['/order-summary']);
+      });
   }
 }

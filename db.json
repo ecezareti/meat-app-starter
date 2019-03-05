@@ -370,5 +370,82 @@
       "restaurantId": "tasty-treats"
     }
   ],
-  "orders": []
+  "orders": [
+    {
+      "address": "Rua Maria Vilaça da Silva, 465",
+      "number": "465",
+      "optionalAddress": "",
+      "paymentOption": "DIN",
+      "orderItems": [
+        {
+          "quantity": 1,
+          "menuId": "cup-cake"
+        },
+        {
+          "quantity": 1,
+          "menuId": "donut"
+        },
+        {
+          "quantity": 1,
+          "menuId": "bread"
+        }
+      ],
+      "id": 4
+    },
+    {
+      "address": "Rua Maria Vilaça da Silva, 465",
+      "number": "465",
+      "optionalAddress": "",
+      "paymentOption": "DIN",
+      "orderItems": [
+        {
+          "quantity": 1,
+          "menuId": "cup-cake"
+        }
+      ],
+      "id": 5
+    },
+    {
+      "address": "Rua Maria Vilaça da Silva, 465",
+      "number": "465",
+      "optionalAddress": "",
+      "paymentOption": "DIN",
+      "orderItems": [
+        {
+          "quantity": 1,
+          "menuId": "capp"
+        },
+        {
+          "quantity": 1,
+          "menuId": "espreso"
+        },
+        {
+          "quantity": 1,
+          "menuId": "starb"
+        },
+        {
+          "quantity": 1,
+          "menuId": "cup-cake"
+        },
+        {
+          "quantity": 1,
+          "menuId": "donut"
+        }
+      ],
+      "id": 6
+    },
+    {
+      "address": "Rua Maria Vilaça da Silva, 465",
+      "number": "465",
+      "optionalAddress": "",
+      "paymentOption": "DIN",
+      "orderItems": [
+        {
+          "quantity": 1,
+          "menuId": "capp"
+        }
+      ],
+      "id": 7
+    }
+  ]
 }

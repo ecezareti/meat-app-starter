@@ -1,3 +1,4 @@
+import { OrderCostsComponent } from './order/order-costs/order-costs.component';
 import { ShoppingCartService } from './restaurant-details/shopping-cart/shopping-cart.service';
 import { RestaurantsComponent } from './restaurants/restaurants.component';
 import { BrowserModule } from '@angular/platform-browser';
@@ -25,6 +26,7 @@ import { InputComponent } from './shared/input/input.component';
 import { RadioComponent } from './shared/radio/radio.component';
 import { OrderItemsComponent } from './order/order-items/order-items.component';
 import { OrderService } from './order/order.service';
+import { OrderSummaryComponent } from './order-summary/order-summary.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +45,9 @@ import { OrderService } from './order/order.service';
     OrderComponent,
     InputComponent,
     RadioComponent,
-    OrderItemsComponent
+    OrderItemsComponent,
+    OrderCostsComponent,
+    OrderSummaryComponent
   ],
   imports: [
     BrowserModule,

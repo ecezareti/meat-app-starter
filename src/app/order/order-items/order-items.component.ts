@@ -1,5 +1,7 @@
+import { OrderService } from './../order.service';
 import { CartItem } from './../../restaurant-details/shopping-cart/cart-item.model';
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { Order, OrderItem } from '../order.model';
 
 @Component({
   selector: 'mt-order-items',
@@ -12,7 +14,7 @@ export class OrderItemsComponent implements OnInit {
   @Output() increaseQty= new EventEmitter<CartItem>();
   @Output() removeItem = new EventEmitter<CartItem>();
 
-  constructor() { }
+  constructor(private orderService: OrderService) { }
 
   ngOnInit() {
   }
