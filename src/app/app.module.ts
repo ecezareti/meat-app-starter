@@ -1,11 +1,10 @@
-import { OrderCostsComponent } from './order/order-costs/order-costs.component';
+import { SharedModule } from './shared/shared.module';
 import { ShoppingCartService } from './restaurant-details/shopping-cart/shopping-cart.service';
 import { RestaurantsComponent } from './restaurants/restaurants.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ROUTES } from './app.routes';
 
@@ -20,13 +19,8 @@ import { MenuComponent } from './restaurant-details/menu/menu.component';
 import { MenuItemComponent } from './restaurant-details/menu-item/menu-item.component';
 import { ShoppingCartComponent } from './restaurant-details/shopping-cart/shopping-cart.component';
 import { ReviewsComponent } from './restaurant-details/reviews/reviews.component';
-import { OrderComponent } from './order/order.component';
-import { InputComponent } from './shared/input/input.component';
-import { RadioComponent } from './shared/radio/radio.component';
-import { OrderItemsComponent } from './order/order-items/order-items.component';
 import { OrderService } from './order/order.service';
 import { OrderSummaryComponent } from './order-summary/order-summary.component';
-import { RatingComponent } from './shared/rating/rating.component';
 
 @NgModule({
   declarations: [
@@ -41,19 +35,12 @@ import { RatingComponent } from './shared/rating/rating.component';
     MenuItemComponent,
     ShoppingCartComponent,
     ReviewsComponent,
-    OrderComponent,
-    InputComponent,
-    RadioComponent,
-    OrderItemsComponent,
-    OrderCostsComponent,
-    OrderSummaryComponent,
-    RatingComponent
+    OrderSummaryComponent
   ],
   imports: [
     BrowserModule,
     HttpModule,
-    FormsModule,
-    ReactiveFormsModule,
+    SharedModule,
     RouterModule.forRoot(ROUTES)
   ],
   providers: [ RestaurantService, ShoppingCartService, OrderService, { provide: LOCALE_ID, useValue: 'pt-br'} ],
