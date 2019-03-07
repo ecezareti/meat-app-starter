@@ -3,7 +3,7 @@ import { RestaurantsComponent } from './restaurants/restaurants.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { HttpModule } from '@angular/http';
-import { RouterModule } from '@angular/router';
+import { RouterModule, PreloadAllModules } from '@angular/router';
 
 import { ROUTES } from './app.routes';
 
@@ -18,7 +18,6 @@ import { MenuItemComponent } from './restaurant-details/menu-item/menu-item.comp
 import { ShoppingCartComponent } from './restaurant-details/shopping-cart/shopping-cart.component';
 import { ReviewsComponent } from './restaurant-details/reviews/reviews.component';
 import { OrderSummaryComponent } from './order-summary/order-summary.component';
-import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [
@@ -38,9 +37,8 @@ import { CoreModule } from './core/core.module';
   imports: [
     BrowserModule,
     HttpModule,
-    SharedModule,
-    CoreModule,
-    RouterModule.forRoot(ROUTES)
+    SharedModule.forRoot(),
+    RouterModule.forRoot(ROUTES, { preloadingStrategy: PreloadAllModules })
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'pt-br'} ],
   bootstrap: [AppComponent]
