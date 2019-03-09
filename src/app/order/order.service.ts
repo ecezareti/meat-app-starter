@@ -4,11 +4,11 @@ import { CartItem } from 'app/restaurant-details/shopping-cart/cart-item.model';
 import { ShoppingCartService } from './../restaurant-details/shopping-cart/shopping-cart.service';
 import { Injectable } from '@angular/core';
 import { Order } from './order.model';
-import { Http, RequestOptions, Headers } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class OrderService {
-  constructor (private cartService: ShoppingCartService, private http: Http) { }
+  constructor (private cartService: ShoppingCartService, private http: HttpClient) { }
 
   items(): CartItem [] {
     return this.cartService.items;
@@ -36,10 +36,7 @@ export class OrderService {
 
     console.log(JSON.stringify(order));
 
-    return this.http.post(`${MEET_API}/orders`,
-      JSON.stringify(order),
-      new RequestOptions( { headers: header }))
-      .map(response => response.json())
+    return this.http.post<Order>(`${MEET_API}/orders`, order)
       .map (responseOrder => responseOrder.id);
   }
 
