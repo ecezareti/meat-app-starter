@@ -10,6 +10,8 @@ import { Restaurant } from 'app/restaurants/restaurant/restaurant.model';
 export class RestaurantDetailsComponent implements OnInit {
   restaurant: Restaurant;
 
+  menuState = 'ready';
+
   constructor(private restaurantService: RestaurantService,
               private route: ActivatedRoute) { }
 
