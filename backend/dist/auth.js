@@ -1,13 +1,17 @@
 "use strict";
 exports.__esModule = true;
 var user_1 = require("./user");
+var jtoken = require("jsonwebtoken");
+var api_config_1 = require("./api-config");
 exports.handleAuthentication = function (req, res) {
     var user = req.body;
     if (isValid(user)) {
         var dbUser = user_1.users[user.email];
+        var token = jtoken.sign({ sub: dbUser.email, iss: api_config_1.apiConfig.secrect }, 'meet-api-password');
         res.json({
             name: dbUser.name,
-            email: dbUser.email
+            email: dbUser.email,
+            accessToken: token
         });
     }
     else {

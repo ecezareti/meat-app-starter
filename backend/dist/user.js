@@ -7,7 +7,9 @@ var User = (function () {
         this.password = password;
     }
     User.prototype.matches = function (another) {
-        return this.email === another.name && this.password === another.password;
+        return (another !== undefined &&
+            this.email === another.name &&
+            this.password === another.password);
     };
     return User;
 }());

@@ -2,7 +2,7 @@
   "compileOnSave": true,
   "compilerOptions": {
     "outDir": "dist",
-    "watch":  true
+    "watch":  false
   }
 }
 

@@ -21,6 +21,7 @@ import { ReviewsComponent } from './restaurant-details/reviews/reviews.component
 import { OrderSummaryComponent } from './order-summary/order-summary.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { LoginComponent } from './security/login/login.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
     ShoppingCartComponent,
     ReviewsComponent,
     OrderSummaryComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -45,9 +47,9 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
     SharedModule.forRoot(),
     RouterModule.forRoot(ROUTES, { preloadingStrategy: PreloadAllModules })
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'pt-br' },
-              { provide: LocationStrategy, useClass: HashLocationStrategy}],
-  // providers: [{ provide: LOCALE_ID, useValue: 'pt-br' }],
+  // providers: [{ provide: LOCALE_ID, useValue: 'pt-br' },
+  //             { provide: LocationStrategy, useClass: HashLocationStrategy}],
+  providers: [{ provide: LOCALE_ID, useValue: 'pt-br' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
