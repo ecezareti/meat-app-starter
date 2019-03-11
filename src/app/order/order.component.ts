@@ -1,32 +1,40 @@
-import { CartItem } from 'app/restaurant-details/shopping-cart/cart-item.model';
-import { Component, OnInit } from '@angular/core';
-import { RadioOption } from 'app/shared/radio/radioOption';
-import { OrderService } from './order.service';
-import { Order, OrderItem } from './order.model';
-import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { LoginService } from "./../security/login/login.service";
+import { CartItem } from "app/restaurant-details/shopping-cart/cart-item.model";
+import { Component, OnInit } from "@angular/core";
+import { RadioOption } from "app/shared/radio/radioOption";
+import { OrderService } from "./order.service";
+import { Order, OrderItem } from "./order.model";
+import { Router } from "@angular/router";
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl
+} from "@angular/forms";
+import { User } from "app/security/login/user.model";
 
 @Component({
-  selector: 'mt-order',
-  templateUrl: './order.component.html'
+  selector: "mt-order",
+  templateUrl: "./order.component.html"
 })
 export class OrderComponent implements OnInit {
-
   paymentOptions: RadioOption[] = [
-    { label: 'Dinheiro', value: 'DIN' },
-    { label: 'Cartão Refeição', value: 'REF' },
-    { label: 'Cartão Débito', value: 'DEB' },
+    { label: "Dinheiro", value: "DIN" },
+    { label: "Cartão Refeição", value: "REF" },
+    { label: "Cartão Débito", value: "DEB" }
   ];
 
   delivery = 2.75;
   orderForm: FormGroup;
+  name: string;
+  email: string;
 
-  emailPattern = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
   numberPattern = /^[0-9]*$/;
+  user: User;
 
   static equalsTo(group: AbstractControl): { [key: string]: boolean } {
-    const email = group.get('email');
-    const emailConfirmation = group.get('emailConfirmation');
+    const email = group.get("email");
+    const emailConfirmation = group.get("emailConfirmation");
 
     if (!email || !emailConfirmation) {
       return undefined;
@@ -39,19 +47,42 @@ export class OrderComponent implements OnInit {
     return undefined;
   }
 
-  constructor(private orderService: OrderService, private router: Router, private formBuilder: FormBuilder) { }
+  constructor(
+    private orderService: OrderService,
+    private router: Router,
+    private formBuilder: FormBuilder
+  ) {}
 
   ngOnInit() {
+    this.user = this.orderService.loggedUser();
+
     this.orderForm = this.formBuilder.group(
       {
-        name: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
-        email: this.formBuilder.control('', [Validators.required, Validators.pattern(this.emailPattern)]),
-        emailConfirmation: this.formBuilder.control('', [Validators.required, Validators.pattern(this.emailPattern)]),
-        address: this.formBuilder.control('', [Validators.required, Validators.minLength(5)]),
-        number: this.formBuilder.control('', [Validators.required, Validators.pattern(this.numberPattern)]),
-        optionalAddress: this.formBuilder.control(''),
-        paymentOption: this.formBuilder.control('', [Validators.required])
-      }, { validator: OrderComponent.equalsTo });
+        name: this.formBuilder.control("", [
+          Validators.required,
+          Validators.minLength(5)
+        ]),
+        email: this.formBuilder.control("", [
+          Validators.required,
+          Validators.email
+        ]),
+        emailConfirmation: this.formBuilder.control("", [
+          Validators.required,
+          Validators.email
+        ]),
+        address: this.formBuilder.control("", [
+          Validators.required,
+          Validators.minLength(5)
+        ]),
+        number: this.formBuilder.control("", [
+          Validators.required,
+          Validators.pattern(this.numberPattern)
+        ]),
+        optionalAddress: this.formBuilder.control(""),
+        paymentOption: this.formBuilder.control("", [Validators.required])
+      },
+      { validator: OrderComponent.equalsTo }
+    );
   }
 
   itemsValue(): number {
@@ -79,12 +110,12 @@ export class OrderComponent implements OnInit {
   }
 
   checkOrder(order: Order) {
-    order.orderItems = this.orderService.items()
-      .map((item) => new OrderItem(item.quantity, item.item.id));
-    this.orderService.checkOrder(order).subscribe(
-      (orderId: string) => {
-        this.orderService.clear();
-        this.router.navigate(['/order-summary']);
-      });
+    order.orderItems = this.orderService
+      .items()
+      .map(item => new OrderItem(item.quantity, item.item.id));
+    this.orderService.checkOrder(order).subscribe((orderId: string) => {
+      this.orderService.clear();
+      this.router.navigate(["/order-summary"]);
+    });
   }
 }

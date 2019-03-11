@@ -24,17 +24,17 @@
         <div class="col-sm-6 col-xs-12">
           <mt-input-container errorMessage="Campo Obrigatório" label="Nome">
             <input type="text" class="form-control" formControlName="name" ngModel placeholder="Nome"
-              autocomplete="false">
+              autocomplete="false" [value]="user?.name">
           </mt-input-container>
         </div>
         <div class="col-sm-3 col-xs-6">
           <mt-input-container errorMessage="Campo Obrigatório" label="E-mail">
-            <input type="text" class="form-control" formControlName="email" placeholder="E-mail">
+            <input type="text" class="form-control" formControlName="email" placeholder="E-mail" [value]="user?.email">
           </mt-input-container>
         </div>
         <div class="col-sm-3 col-xs-6">
           <mt-input-container errorMessage="Campo Obrigatório" label="Confirmação do e-mail">
-            <input type="text" class="form-control" formControlName="emailConfirmation" placeholder="Confirmação do e-mail">
+            <input type="text" class="form-control" formControlName="emailConfirmation" placeholder="Confirmação do e-mail"  [value]="user?.email">
           </mt-input-container>
         </div>
 

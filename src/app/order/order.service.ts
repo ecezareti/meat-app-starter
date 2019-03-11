@@ -1,28 +1,34 @@
+import { LoginService } from './../security/login/login.service';
 import { Observable } from 'rxjs/Observable';
 import { MEET_API } from './../app.api';
 import { CartItem } from 'app/restaurant-details/shopping-cart/cart-item.model';
 import { ShoppingCartService } from './../restaurant-details/shopping-cart/shopping-cart.service';
 import { Injectable } from '@angular/core';
 import { Order } from './order.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { User } from 'app/security/login/user.model';
 
 @Injectable()
 export class OrderService {
-  constructor (private cartService: ShoppingCartService, private http: HttpClient) { }
+  constructor(private cartService: ShoppingCartService, private http: HttpClient, private loginService: LoginService) { }
 
-  items(): CartItem [] {
+  loggedUser(): User {
+    return this.loginService.user;
+  }
+
+  items(): CartItem[] {
     return this.cartService.items;
   }
 
-  removeItem (item: CartItem) {
+  removeItem(item: CartItem) {
     this.cartService.remove(item);
   }
 
-  increaseQty (item: CartItem) {
+  increaseQty(item: CartItem) {
     this.cartService.increaseQty(item);
   }
 
-  decreaseQty (item: CartItem) {
+  decreaseQty(item: CartItem) {
     this.cartService.decreaseQty(item);
   }
 
@@ -31,13 +37,11 @@ export class OrderService {
   }
 
   checkOrder(order: Order): Observable<string> {
-    let header = new Headers();
-    header.append('Content-Type', 'application/json');
+    let header = new HttpHeaders().set ('authorization', `Bearer ${this.loggedUser().accessToken}`);
 
-    console.log(JSON.stringify(order));
-
-    return this.http.post<Order>(`${MEET_API}/orders`, order)
-      .map (responseOrder => responseOrder.id);
+    return this.http
+      .post<Order>(`${MEET_API}/orders`, order, { headers: header })
+      .map(responseOrder => responseOrder.id);
   }
 
   clear(): void {
