@@ -19,7 +19,7 @@ const options = {
 
 server.post('/login', handleAuthentication)
 
-server.use ('/orders', handleAuthorization);
+server.use('/orders', handleAuthorization);
 
 server.use(router);
 

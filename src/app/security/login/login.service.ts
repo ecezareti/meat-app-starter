@@ -24,4 +24,8 @@ export class LoginService {
   handleLogin(path?: string): any {
     this.router.navigate (['/login', path]);
   }
+
+  logout(): any {
+    this.user = undefined;
+  }
 }

@@ -37,10 +37,8 @@ export class OrderService {
   }
 
   checkOrder(order: Order): Observable<string> {
-    let header = new HttpHeaders().set ('authorization', `Bearer ${this.loggedUser().accessToken}`);
-
     return this.http
-      .post<Order>(`${MEET_API}/orders`, order, { headers: header })
+      .post<Order>(`${MEET_API}/orders`, order)
       .map(responseOrder => responseOrder.id);
   }
 

@@ -2,7 +2,7 @@ import { SharedModule } from './shared/shared.module';
 import { RestaurantsComponent } from './restaurants/restaurants.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule, PreloadAllModules } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -22,6 +22,8 @@ import { OrderSummaryComponent } from './order-summary/order-summary.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { LoginComponent } from './security/login/login.component';
+import { UserDetailsComponent } from './header/user-details/user-details.component';
+import { AuthInterceptor } from './security/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,8 @@ import { LoginComponent } from './security/login/login.component';
     ReviewsComponent,
     OrderSummaryComponent,
     NotFoundComponent,
-    LoginComponent
+    LoginComponent,
+    UserDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +52,9 @@ import { LoginComponent } from './security/login/login.component';
   ],
   // providers: [{ provide: LOCALE_ID, useValue: 'pt-br' },
   //             { provide: LocationStrategy, useClass: HashLocationStrategy}],
-  providers: [{ provide: LOCALE_ID, useValue: 'pt-br' }],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'pt-br' },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

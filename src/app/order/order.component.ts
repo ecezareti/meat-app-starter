@@ -1,27 +1,26 @@
-import { LoginService } from "./../security/login/login.service";
-import { CartItem } from "app/restaurant-details/shopping-cart/cart-item.model";
-import { Component, OnInit } from "@angular/core";
-import { RadioOption } from "app/shared/radio/radioOption";
-import { OrderService } from "./order.service";
-import { Order, OrderItem } from "./order.model";
-import { Router } from "@angular/router";
+import { CartItem } from 'app/restaurant-details/shopping-cart/cart-item.model';
+import { Component, OnInit } from '@angular/core';
+import { RadioOption } from 'app/shared/radio/radioOption';
+import { OrderService } from './order.service';
+import { Order, OrderItem } from './order.model';
+import { Router } from '@angular/router';
 import {
   FormBuilder,
   FormGroup,
   Validators,
   AbstractControl
-} from "@angular/forms";
-import { User } from "app/security/login/user.model";
+} from '@angular/forms';
+import { User } from 'app/security/login/user.model';
 
 @Component({
-  selector: "mt-order",
-  templateUrl: "./order.component.html"
+  selector: 'mt-order',
+  templateUrl: './order.component.html'
 })
 export class OrderComponent implements OnInit {
   paymentOptions: RadioOption[] = [
-    { label: "Dinheiro", value: "DIN" },
-    { label: "Cartão Refeição", value: "REF" },
-    { label: "Cartão Débito", value: "DEB" }
+    { label: 'Dinheiro', value: 'DIN' },
+    { label: 'Cartão Refeição', value: 'REF' },
+    { label: 'Cartão Débito', value: 'DEB' }
   ];
 
   delivery = 2.75;
@@ -31,10 +30,11 @@ export class OrderComponent implements OnInit {
 
   numberPattern = /^[0-9]*$/;
   user: User;
+  orderId: any;
 
   static equalsTo(group: AbstractControl): { [key: string]: boolean } {
-    const email = group.get("email");
-    const emailConfirmation = group.get("emailConfirmation");
+    const email = group.get('email');
+    const emailConfirmation = group.get('emailConfirmation');
 
     if (!email || !emailConfirmation) {
       return undefined;
@@ -51,35 +51,35 @@ export class OrderComponent implements OnInit {
     private orderService: OrderService,
     private router: Router,
     private formBuilder: FormBuilder
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.user = this.orderService.loggedUser();
 
     this.orderForm = this.formBuilder.group(
       {
-        name: this.formBuilder.control("", [
+        name: this.formBuilder.control('', [
           Validators.required,
           Validators.minLength(5)
         ]),
-        email: this.formBuilder.control("", [
+        email: this.formBuilder.control('', [
           Validators.required,
           Validators.email
         ]),
-        emailConfirmation: this.formBuilder.control("", [
+        emailConfirmation: this.formBuilder.control('', [
           Validators.required,
           Validators.email
         ]),
-        address: this.formBuilder.control("", [
+        address: this.formBuilder.control('', [
           Validators.required,
           Validators.minLength(5)
         ]),
-        number: this.formBuilder.control("", [
+        number: this.formBuilder.control('', [
           Validators.required,
           Validators.pattern(this.numberPattern)
         ]),
-        optionalAddress: this.formBuilder.control(""),
-        paymentOption: this.formBuilder.control("", [Validators.required])
+        optionalAddress: this.formBuilder.control(''),
+        paymentOption: this.formBuilder.control('', [Validators.required])
       },
       { validator: OrderComponent.equalsTo }
     );
@@ -113,9 +113,17 @@ export class OrderComponent implements OnInit {
     order.orderItems = this.orderService
       .items()
       .map(item => new OrderItem(item.quantity, item.item.id));
-    this.orderService.checkOrder(order).subscribe((orderId: string) => {
-      this.orderService.clear();
-      this.router.navigate(["/order-summary"]);
-    });
+    this.orderService.checkOrder(order)
+      .do((orderId: string) => {
+        this.orderId = orderId
+      })
+      .subscribe(() => {
+        this.orderService.clear();
+        this.router.navigate(['/order-summary']);
+      });
+  }
+
+  isOrderCompleted(): any {
+    return this.orderId !== undefined;
   }
 }
