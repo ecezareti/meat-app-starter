@@ -1,7 +1,7 @@
 import { SharedModule } from './shared/shared.module';
 import { RestaurantsComponent } from './restaurants/restaurants.component';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, LOCALE_ID } from '@angular/core';
+import { NgModule, LOCALE_ID, ErrorHandler } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule, PreloadAllModules } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -24,6 +24,7 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { LoginComponent } from './security/login/login.component';
 import { UserDetailsComponent } from './header/user-details/user-details.component';
 import { AuthInterceptor } from './security/auth.interceptor';
+import { ApplicationErrorHandler } from './app.error-handler';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { AuthInterceptor } from './security/auth.interceptor';
   //             { provide: LocationStrategy, useClass: HashLocationStrategy}],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-br' },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: ErrorHandler, useClass: ApplicationErrorHandler }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
