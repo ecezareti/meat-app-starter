@@ -2,7 +2,7 @@ import { User } from './../../security/login/user.model';
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from 'app/security/login/login.service';
 import { Router, NavigationEnd } from '@angular/router';
-import 'rxjs/add/operator/filter'
+import { filter } from 'rxjs/operators'
 
 @Component({
   selector: 'mt-user-details',
@@ -13,26 +13,27 @@ export class UserDetailsComponent implements OnInit {
   lastUrl: string;
 
   constructor(private loginService: LoginService, private router: Router) {
-    this.router.events.filter(e => e instanceof NavigationEnd)
-      .subscribe((e: NavigationEnd) => this.lastUrl = e.url);
+    this.router.events.pipe(
+      filter(e => e instanceof NavigationEnd)
+    ).subscribe((e: NavigationEnd) => this.lastUrl = e.url);
   }
 
   ngOnInit() {
   }
 
-  user (): User {
+  user(): User {
     return this.loginService.user;
   }
 
-  login (): void {
+  login(): void {
     this.loginService.handleLogin(this.lastUrl);
   }
 
-  logout (): void {
+  logout(): void {
     this.loginService.logout();
   }
 
-  isLoggedIn (): boolean {
+  isLoggedIn(): boolean {
     return this.loginService.isLoggedIn();
   }
 }

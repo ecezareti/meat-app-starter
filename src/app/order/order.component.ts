@@ -11,6 +11,7 @@ import {
   AbstractControl
 } from '@angular/forms';
 import { User } from 'app/security/login/user.model';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'mt-order',
@@ -56,7 +57,7 @@ export class OrderComponent implements OnInit {
   ngOnInit() {
     this.user = this.orderService.loggedUser();
 
-    this.orderForm = this.formBuilder.group(
+    this.orderForm = new FormGroup(
       {
         name: this.formBuilder.control('', [
           Validators.required,
@@ -81,7 +82,7 @@ export class OrderComponent implements OnInit {
         optionalAddress: this.formBuilder.control(''),
         paymentOption: this.formBuilder.control('', [Validators.required])
       },
-      { validator: OrderComponent.equalsTo }
+      { validators: [OrderComponent.equalsTo], updateOn: 'blur' }
     );
   }
 
@@ -114,9 +115,11 @@ export class OrderComponent implements OnInit {
       .items()
       .map(item => new OrderItem(item.quantity, item.item.id));
     this.orderService.checkOrder(order)
-      .do((orderId: string) => {
-        this.orderId = orderId
-      })
+      .pipe(
+        tap((orderId: string) => {
+          this.orderId = orderId
+        })
+      )
       .subscribe(() => {
         this.orderService.clear();
         this.router.navigate(['/order-summary']);

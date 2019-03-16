@@ -1,5 +1,6 @@
 import { LoginService } from './../security/login/login.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import {map} from 'rxjs/operators'
 import { MEET_API } from './../app.api';
 import { CartItem } from 'app/restaurant-details/shopping-cart/cart-item.model';
 import { ShoppingCartService } from './../restaurant-details/shopping-cart/shopping-cart.service';
@@ -39,7 +40,9 @@ export class OrderService {
   checkOrder(order: Order): Observable<string> {
     return this.http
       .post<Order>(`${MEET_API}/orders`, order)
-      .map(responseOrder => responseOrder.id);
+      .pipe(
+        map(responseOrder => responseOrder.id)
+      );
   }
 
   clear(): void {
