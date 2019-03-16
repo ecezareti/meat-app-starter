@@ -731,6 +731,22 @@
         }
       ],
       "id": 23
+    },
+    {
+      "name": "Carlos Cezareti",
+      "email": "edu.cezareti@gmail.com",
+      "emailConfirmation": "edu.cezareti@gmail.com",
+      "address": "Rua Maria Vilaça da Silva, 465",
+      "number": "465",
+      "optionalAddress": "",
+      "paymentOption": "DIN",
+      "orderItems": [
+        {
+          "quantity": 1,
+          "menuId": "capp"
+        }
+      ],
+      "id": 24
     }
   ]
 }

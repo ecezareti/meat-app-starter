@@ -25,7 +25,5 @@ function isValid(user) {
         return false;
     }
     var dbUser = user_1.users[user.email];
-    console.log(user);
-    console.log(dbUser);
     return dbUser !== undefined && !dbUser.matches(user);
 }

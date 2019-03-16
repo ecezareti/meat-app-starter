@@ -20,11 +20,14 @@ import { ShoppingCartComponent } from './restaurant-details/shopping-cart/shoppi
 import { ReviewsComponent } from './restaurant-details/reviews/reviews.component';
 import { OrderSummaryComponent } from './order-summary/order-summary.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { LocationStrategy, HashLocationStrategy, registerLocaleData } from '@angular/common';
+import pt from '@angular/common/locales/pt';
 import { LoginComponent } from './security/login/login.component';
 import { UserDetailsComponent } from './header/user-details/user-details.component';
 import { AuthInterceptor } from './security/auth.interceptor';
 import { ApplicationErrorHandler } from './app.error-handler';
+
+registerLocaleData (pt, 'pt');
 
 @NgModule({
   declarations: [
@@ -54,7 +57,7 @@ import { ApplicationErrorHandler } from './app.error-handler';
   // providers: [{ provide: LOCALE_ID, useValue: 'pt-br' },
   //             { provide: LocationStrategy, useClass: HashLocationStrategy}],
   providers: [
-    { provide: LOCALE_ID, useValue: 'pt-br' },
+    { provide: LOCALE_ID, useValue: 'pt' },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: ErrorHandler, useClass: ApplicationErrorHandler }],
   bootstrap: [AppComponent]
