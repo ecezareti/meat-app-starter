@@ -17,13 +17,13 @@
           <tbody>
           <tr *ngFor="let cartItem of items()" [@row]="rowState">
             <th style="width:60%">{{cartItem.item.name}}</th>
-            <td class="text-right">{{cartItem.quantity}}x {{cartItem.value() | currency : 'BRL' : true}}</td>
+            <td class="text-right">{{cartItem.quantity}}x {{cartItem.value() | currency : 'BRL' : 'symbol'}}</td>
             <td class="text-danger"><a (click)="removeItem(cartItem)" class="fa fa-remove"></a></td>
           </tr>
           <tr>
             <th>Total:</th>
 
-            <td class="text-right">{{total() | currency : 'BRL' : true}}</td>
+            <td class="text-right">{{total() | currency : 'BRL' : 'symbol'}}</td>
           </tr>
         </tbody></table>
       </div>
